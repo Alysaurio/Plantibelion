@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class RestriccionBolita : MonoBehaviour
 {    
-    [SerializeField] private float radius;
+    public float radius;
     public FollowMouse cursor;
-    void Awake()
+    /* void Awake()
     {
         if (cursor != null)
             radius = cursor.radius;
@@ -23,5 +23,22 @@ public class RestriccionBolita : MonoBehaviour
             direccion = direccion.normalized * radius;
             transform.position = cursor.transform.position + direccion;
         }
+    } */
+    void Awake()
+    {
+        if (cursor != null)
+            radius = cursor.radius;
+        else
+            Debug.LogError("El cursor no está asignado en RestriccionBolita");
+    }
+    void Update()
+    {
+        Vector3 direccion= transform.position - cursor.transform.position;
+        if (direccion.magnitude > radius)
+            transform.position = ConstraintDistance(transform.position, cursor.transform.position, radius);
+    }
+    public Vector3 ConstraintDistance(Vector3 point, Vector3 anchor, float distance)
+    {
+        return ((point - anchor).normalized * distance) + anchor;
     }
 }
