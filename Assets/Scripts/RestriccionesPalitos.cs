@@ -20,7 +20,10 @@ public class RestriccionesPalitos : RestriccionBolita
     void Update()
     {
         Vector3 mousePos = cursor.transform.position;
-        segments[0].position = mousePos;
+        segments[0].position = ConstraintDistance(segments[0].position, mousePos, radius);
+        Vector3 dir = mousePos - segments[0].position;
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        segments[0].rotation = Quaternion.Euler(0, 0, angle - 90);
         for (int i = 1; i < segments.Count; i++)
         {
             RotateTowardsPrevious(i);
@@ -32,6 +35,6 @@ public class RestriccionesPalitos : RestriccionBolita
     {
         Vector3 dir = segments[i - 1].position - segments[i].position;
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        segments[i].rotation = Quaternion.Euler(0, 0, angle+ 90);
+        segments[i].rotation = Quaternion.Euler(0, 0, angle- 90);
     }
 }
