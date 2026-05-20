@@ -153,9 +153,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   radius: 3
   cursor: {fileID: 1825425913}
+  mode: 1
   segmentPrefab: {fileID: 9012124832718157750, guid: a245029b2e2b6004e87fd03d01fca436, type: 3}
   segmentCount: 10
   segments: []
+  ancla: {fileID: 1457247080}
 --- !u!4 &282213600
 Transform:
   m_ObjectHideFlags: 0
@@ -232,7 +234,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 12
+  orthographic size: 16
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -362,6 +364,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1457247079
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1457247080}
+  m_Layer: 0
+  m_Name: ancla
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1457247080
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1457247079}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1825425912
 GameObject:
   m_ObjectHideFlags: 0
@@ -415,3 +448,4 @@ SceneRoots:
   - {fileID: 1825425914}
   - {fileID: 766104525}
   - {fileID: 282213600}
+  - {fileID: 1457247080}
