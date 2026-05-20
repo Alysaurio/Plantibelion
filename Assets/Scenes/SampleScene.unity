@@ -138,7 +138,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &282213599
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -152,7 +152,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 3
+  bolitaRadius: 0.5
   cursor: {fileID: 1825425913}
+  bolitaPrefab: {fileID: 0}
+  maxBolitas: 20
+  bolitas: []
   mode: 1
   segmentPrefab: {fileID: 9012124832718157750, guid: a245029b2e2b6004e87fd03d01fca436, type: 3}
   segmentCount: 10
@@ -277,7 +281,7 @@ GameObject:
   - component: {fileID: 766104524}
   - component: {fileID: 766104523}
   m_Layer: 0
-  m_Name: Circle
+  m_Name: Bolita1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -296,7 +300,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 3
+  bolitaRadius: 0.5
   cursor: {fileID: 1825425913}
+  bolitaPrefab: {fileID: 7246757996522060014, guid: 94a5f73ee97eb8d46bf7e98560ae6eec, type: 3}
+  maxBolitas: 20
+  bolitas: []
 --- !u!212 &766104524
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -379,7 +387,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1457247080
 Transform:
   m_ObjectHideFlags: 0
@@ -424,7 +432,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 583d13b7724d30b43b4614633dc732f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 2.2
+  radio: 3
 --- !u!4 &1825425914
 Transform:
   m_ObjectHideFlags: 0
@@ -440,6 +448,63 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &3251838450141094042
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1166045434716560266, guid: 94a5f73ee97eb8d46bf7e98560ae6eec, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -3.77
+      objectReference: {fileID: 0}
+    - target: {fileID: 1166045434716560266, guid: 94a5f73ee97eb8d46bf7e98560ae6eec, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.28
+      objectReference: {fileID: 0}
+    - target: {fileID: 1166045434716560266, guid: 94a5f73ee97eb8d46bf7e98560ae6eec, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1166045434716560266, guid: 94a5f73ee97eb8d46bf7e98560ae6eec, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1166045434716560266, guid: 94a5f73ee97eb8d46bf7e98560ae6eec, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1166045434716560266, guid: 94a5f73ee97eb8d46bf7e98560ae6eec, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1166045434716560266, guid: 94a5f73ee97eb8d46bf7e98560ae6eec, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1166045434716560266, guid: 94a5f73ee97eb8d46bf7e98560ae6eec, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1166045434716560266, guid: 94a5f73ee97eb8d46bf7e98560ae6eec, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1166045434716560266, guid: 94a5f73ee97eb8d46bf7e98560ae6eec, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7246757996522060014, guid: 94a5f73ee97eb8d46bf7e98560ae6eec, type: 3}
+      propertyPath: m_Name
+      value: Bolita2
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 94a5f73ee97eb8d46bf7e98560ae6eec, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -449,3 +514,4 @@ SceneRoots:
   - {fileID: 766104525}
   - {fileID: 282213600}
   - {fileID: 1457247080}
+  - {fileID: 3251838450141094042}

@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 public class FollowMouse : MonoBehaviour
 {
-    public float radius;
+    public float radio;
     void Start()
     {
 
@@ -22,6 +22,6 @@ public class FollowMouse : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, radius);
+        Gizmos.DrawWireSphere(transform.position, radio);
     }
 }
