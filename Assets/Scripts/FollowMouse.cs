@@ -14,10 +14,10 @@ public class FollowMouse : MonoBehaviour
     {
         //Vector3 desired = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-        Vector3 screenPos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        /* Vector3 screenPos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         screenPos.z = 0;
 
-        transform.position = screenPos;
+        transform.position = screenPos; */
     }
     private void OnDrawGizmos()
     {
