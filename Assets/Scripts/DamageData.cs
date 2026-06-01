@@ -1,4 +1,4 @@
 public scruct DamageData
 {
-
+    //asdasd
 }
