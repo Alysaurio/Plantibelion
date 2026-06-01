@@ -1,0 +1,4 @@
+public scruct DamageData
+{
+
+}

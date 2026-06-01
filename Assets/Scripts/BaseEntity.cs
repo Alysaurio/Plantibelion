@@ -31,7 +31,6 @@ public abstract class BaseEntity : MonoBehaviour
     protected virtual void Die()
     {
         Debug.Log($"{entityName} lo mataron doctor, mataron un inoceeeentee");
-        //  añadir animación de muerte, efectos, etc.
         Destroy(gameObject);
     }
 
