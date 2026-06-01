@@ -25,12 +25,8 @@ public class BaseStats
     }
     public void SetHealth(int health)
     {
-        if (health <= 0)
-            health = 0;
-
         this.health = health;
     }
-
     public void SetSpeed(int speed)
     {
         this.speed = speed;

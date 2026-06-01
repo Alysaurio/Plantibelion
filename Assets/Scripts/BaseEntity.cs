@@ -1,18 +1,40 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BaseEntity : MonoBehaviour
+public abstract class BaseEntity : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [Header("Entity info")]
+    public int entityID;
+    public string entityName;
+    public string entityDescription;
+    [Header("Stats")]
+    public BaseStats stats;
+    protected int currentHealth;   
+    
+    protected virtual void Awake()
     {
-        
+        currentHealth = stats.Health;
     }
 
-    // Update is called once per frame
-    void Update()
+    public virtual void TakeDamage(int damage)
     {
-        
+        currentHealth -= damage;
+        Debug.Log($"{entityName} lo hirieron señor poleceaaaa!");
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
     }
+
+    protected virtual void Die()
+    {
+        Debug.Log($"{entityName} lo mataron doctor, mataron un inoceeeentee");
+        //  añadir animación de muerte, efectos, etc.
+        Destroy(gameObject);
+    }
+
+    public int CurrentHealth => currentHealth;
+    public BaseStats Stats => stats;
 }
