@@ -22,6 +22,9 @@ public class ShockWaveSkill : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (owner == null) return;
+        transform.position = owner.transform.position;
+
         currentRadius += expansionSpeed * Time.deltaTime;
         Collider[] hits = Physics.OverlapSphere(transform.position, currentRadius);
 
