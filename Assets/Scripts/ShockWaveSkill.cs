@@ -5,9 +5,9 @@ using UnityEngine;
 public class ShockWaveSkill : MonoBehaviour
 {
     [Header("ShockWave Settings")]
-    [SerializeField] private float maxRadius = 5f;
-    [SerializeField] private float expansionSpeed = 10f;
-    [SerializeField] private int damage = 10;
+    public float maxRadius = 5f;
+    public float expansionSpeed = 10f;
+    public int damage = 10;
 
     private float currentRadius;
     private BaseEntity owner;
@@ -44,7 +44,7 @@ public class ShockWaveSkill : MonoBehaviour
 
     }
 
-    private void Initialize(BaseEntity owner, int damage)
+    public void Initialize(BaseEntity owner, int damage)
     {
         this.owner = owner;
         this.damage = damage;

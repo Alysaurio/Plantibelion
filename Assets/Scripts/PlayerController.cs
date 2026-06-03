@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.InputSystem;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : BaseEntity
 {
     public InputSystem inputs;
     public Rigidbody2D rigibody;
@@ -18,14 +19,17 @@ public class PlayerController : MonoBehaviour
     public GameObject shockWavePrefab;
     public int shockWaveDamage = 10;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         inputs = new();
         CurrentNJump = NMaxJump;
     }
 
     private void OnEnable()
     {
+        inputs.Player.ShockWave.performed += OnShockWave;
+
         inputs.Enable();
         inputs.Player.Movement.performed += OnMovementStart;
         inputs.Player.Movement.canceled += OnMovementFinish;
@@ -33,15 +37,33 @@ public class PlayerController : MonoBehaviour
         inputs.Player.Jump.performed += OnJumpStart;
     }
 
+    private void OnDisable()
+    {
+        inputs.Player.Movement.performed -= OnMovementStart;
+        inputs.Player.Movement.canceled -= OnMovementFinish;
+        inputs.Player.Jump.performed -= OnJumpStart;
+        inputs.Disable();
+    }
+
     private void Update()
     {
         if (MoveInput != 0)
         {
-            Vector2 dir = new Vector2(MoveInput, rigibody.linearVelocity.y);
-            rigibody.linearVelocity = new Vector2(MoveInput * Speed, rigibody.linearVelocity.y);
+            Vector2 dir = new Vector2(MoveInput, rigibody.velocity.y);
+            rigibody.velocity = new Vector2(MoveInput * Speed, rigibody.velocity.y);
         }
 
     }
+
+    private void OnShockWave(InputAction.CallbackContext context)
+    {
+        GameObject obj = Instantiate(shockWavePrefab, transform.position, Quaternion.identity);
+        ShockWaveSkill skill = obj.GetComponent<ShockWaveSkill>();
+        skill.Initialize(this, shockWaveDamage);
+    }
+
+
+
     private void OnMovementStart(InputAction.CallbackContext context)
     {
         MoveInput = context.ReadValue<Vector2>().x;
@@ -54,7 +76,7 @@ public class PlayerController : MonoBehaviour
     {
         if (IsGrounded || CurrentNJump > 0)
         {
-            rigibody.linearVelocity = Vector2.zero;
+            rigibody.velocity = Vector2.zero;
             rigibody.AddForce(Vector2.up * JumpForce, ForceMode2D.Impulse);
             CurrentNJump--;
         }
@@ -64,7 +86,7 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.tag == "Ground")
         {
-            rigibody.linearDamping = 30;
+            rigibody.drag = 30;
             IsGrounded = true;
             CurrentNJump = NMaxJump;
         }
@@ -73,7 +95,7 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.tag == "Ground")
         {
-            rigibody.linearDamping = 1;
+            rigibody.drag = 1;
             IsGrounded = false;
         }
     }
