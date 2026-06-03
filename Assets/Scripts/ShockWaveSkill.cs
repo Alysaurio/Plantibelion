@@ -24,11 +24,11 @@ public class ShockWaveSkill : MonoBehaviour
     {
         if (owner == null) return;
         transform.position = owner.transform.position;
-
         currentRadius += expansionSpeed * Time.deltaTime;
-        Collider[] hits = Physics.OverlapSphere(transform.position, currentRadius);
 
-        foreach (Collider hit in hits)
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, currentRadius);
+
+        foreach (Collider2D hit in hits)
         {
             if (!hit.TryGetComponent<IDamageable>(out var target))
                 continue;
@@ -57,11 +57,10 @@ public class ShockWaveSkill : MonoBehaviour
     {
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(transform.position, currentRadius);
-    }
-    private void OnDrawGizmosSelected()
-    {
+
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, maxRadius);
     }
+    
 
 }

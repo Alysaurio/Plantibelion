@@ -11,7 +11,7 @@ public abstract class BaseEntity : MonoBehaviour, IDamageable
     public string entityDescription;
     [Header("Stats")]
     public BaseStats stats;
-    protected int currentHealth;   
+    [SerializeField] protected int currentHealth;   
     
     protected virtual void Awake()
     {
