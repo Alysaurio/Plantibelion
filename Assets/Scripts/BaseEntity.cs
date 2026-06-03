@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class BaseEntity : MonoBehaviour
+public abstract class BaseEntity : MonoBehaviour, IDamageable
 {
     [Header("Entity info")]
     public int entityID;
@@ -26,6 +26,10 @@ public abstract class BaseEntity : MonoBehaviour
         {
             Die();
         }
+    }
+    public virtual void TakeDamage(DamageData damageData)
+    {
+        TakeDamage(damageData.damage);
     }
 
     protected virtual void Die()
