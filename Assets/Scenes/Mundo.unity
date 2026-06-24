@@ -594,6 +594,7 @@ MonoBehaviour:
   entityID: 0
   entityName: 
   entityDescription: 
+  currentHealth: 0
   rigibody: {fileID: 1460650142}
   IsGrounded: 0
   MoveInput: 0
@@ -677,7 +678,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!212 &1460650143
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -739,7 +740,7 @@ Transform:
   m_GameObject: {fileID: 1460650139}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.18, y: -2.15, z: 0}
+  m_LocalPosition: {x: -5.07, y: -0.62, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -919,6 +920,7 @@ MonoBehaviour:
   entityID: 0
   entityName: asdasd
   entityDescription: ASDAs
+  currentHealth: 0
 --- !u!1 &1809901284
 GameObject:
   m_ObjectHideFlags: 0
