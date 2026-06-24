@@ -16,4 +16,10 @@ public class Enemy1 : BaseEntity
         // Colocar aquí luego el sistema de drop
         base.Die();
     }
+
+
+    public void Attack()
+    {
+        
+    }
 }

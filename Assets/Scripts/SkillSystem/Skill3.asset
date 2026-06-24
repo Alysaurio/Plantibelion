@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: Skill3
   m_EditorClassIdentifier: 
   Icon: {fileID: 0}
+  skillName: asdasd3
   Range: 0
   Speed: 0
   Damage: 0
   Knockback: 0
-  modeAttack: 0
-  baseSkill: {fileID: 0}
+  Cooldown: 0
+  modeAttack: 1
+  skillPrefab: {fileID: 8863296124780485841, guid: 2384ca15daec54c47b2289ce443f9b87, type: 3}
