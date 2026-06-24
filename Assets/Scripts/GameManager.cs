@@ -1,18 +1,25 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [Header("Referencias")]
+    public PlayerController player;
 
-    // Update is called once per frame
-    void Update()
+    [Header("Skills iniciales")]   
+    public SkillData[] startingSkills; // aun no le asigno nada
+
+    private void Start()
     {
-        
+        if (player == null)
+        {
+            Debug.LogError("[GameManager] No hay PlayerController asignado.");
+            return;
+        }
+
+        foreach (SkillData skill in startingSkills)
+        {
+            if (skill != null)
+                player.AcquireSkill(skill);
+        }
     }
 }

@@ -2,64 +2,52 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShockWaveSkill : MonoBehaviour
+public class ShockWaveSkill : BaseSkill
 {
-    [Header("ShockWave Settings")]
-    public float maxRadius = 5f;
-    public float expansionSpeed = 10f;
-    public int damage = 10;
-
+   
     private float currentRadius;
-    private BaseEntity owner;
     private readonly HashSet<IDamageable> hitTargets = new();
-
-    
-    void Start()
+ 
+    public override void Activate()
     {
-        
+        // Añadir un sonido o efecto visual
     }
-
-    // Update is called once per frame
-    void Update()
+ 
+    private void Update()
     {
         if (owner == null) return;
+ 
         transform.position = owner.transform.position;
-        currentRadius += expansionSpeed * Time.deltaTime;
-
+        currentRadius += skillData.Speed * Time.deltaTime;
+ 
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, currentRadius);
-
+ 
         foreach (Collider2D hit in hits)
         {
-            if (!hit.TryGetComponent<IDamageable>(out var target))
-                continue;
-            if (target == owner)
-                continue;
-            if (hitTargets.Contains(target))
-                continue;
-
+            if (!hit.TryGetComponent<IDamageable>(out var target)) continue;
+            if (target == (IDamageable)owner) continue;
+            if (hitTargets.Contains(target)) continue;
+ 
             hitTargets.Add(target);
-            target.TakeDamage(new DamageData(damage, owner));
+            target.TakeDamage(new DamageData((int)skillData.Damage, owner));
         }
-        if (currentRadius >= maxRadius)
+ 
+        if (currentRadius >= skillData.Range)
         {
             Destroy(gameObject);
         }
-
     }
-
-    public void Initialize(BaseEntity owner, int damage)
-    {
-        this.owner = owner;
-        this.damage = damage;
-        currentRadius = 0f;
-    }
+ 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(transform.position, currentRadius);
-
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, maxRadius);
+ 
+        if (skillData != null)
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(transform.position, skillData.Range);
+        }
     }
     
 

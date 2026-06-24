@@ -5,27 +5,16 @@ using UnityEngine;
 
 public class BaseSkill : MonoBehaviour
 {
-    public SkillData skillData;
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-    public virtual void SetSkill(SkillData data,BaseEntity Target)
+    public SkillData skillData { get; private set; }
+    protected BaseEntity owner { get; private set; }
+    public virtual void Initialize(SkillData data, BaseEntity skillOwner)
     {
         skillData = data;
-        BaseSkill skill = Target.gameObject.AddComponent<BaseSkill>() ;
-        skill.SetSkill(data, Target);
-        
+        owner = skillOwner;
     }
-    public virtual void ActiveSkill()
 
+    public virtual void Activate()
     {
-        Debug.LogWarning("DEBES SOBREESCRIBIR ESTE METODO");
+        Debug.LogWarning("Activate() no está sobreescrito en " + GetType().Name);
     }
 }

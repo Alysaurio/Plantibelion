@@ -12,4 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6595753d7d2e01341be30dc9c258e4c8, type: 3}
   m_Name: OndaExpansva
   m_EditorClassIdentifier: 
-  baseSkill: {fileID: 0}
+  Icon: {fileID: 0}
+  skillName: OnditaMortal
+  Range: 5
+  Speed: 10
+  Damage: 10
+  Knockback: 5
+  Cooldown: 1
+  modeAttack: 1
+  skillPrefab: {fileID: 7740921353006585520, guid: df00460773be95b45b050697af46115e, type: 3}
