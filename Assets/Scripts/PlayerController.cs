@@ -11,11 +11,14 @@ public class PlayerController : BaseEntity
     public Rigidbody2D rigibody;
     public bool IsGrounded;
     public float MoveInput;
-    public float Speed;
+    public float Speed = 5f;
     public float JumpForce;
     public float NMaxJump;
     public float CurrentNJump;
     public float timeCooldownSkill1 = 0.0f;
+    public float velocityRun = 15f;
+    public float velocityActual;
+    
 
     [Header("Skills")]
     private const int MaxSkills = 2;
@@ -148,5 +151,10 @@ public class PlayerController : BaseEntity
             rigibody.drag = 1;
             IsGrounded = false;
         }
+    }
+
+    private void Update()
+    {
+        velocityActual = Input.GetKeyDown(KeyCode.LeftShift) ? velocityRun : Speed;
     }
 }
