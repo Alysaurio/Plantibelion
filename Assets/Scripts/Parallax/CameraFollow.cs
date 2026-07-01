@@ -8,7 +8,8 @@ public class CameraFollow : MonoBehaviour
     {
 
     }
-    void Update()
+
+    private void LateUpdate()
     {
         Vector3 targetPos = target.transform.position;
         targetPos.z = -10;

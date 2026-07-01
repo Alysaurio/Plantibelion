@@ -25,15 +25,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "ShockWave",
-                    "type": "Button",
-                    "id": "d902deaa-c582-4947-86a9-5c4085f190e4",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Skill1",
                     "type": "Button",
                     "id": "86e89af9-40cc-4486-b528-803f8eae877c",
@@ -116,17 +107,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "Jump",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "f5a664df-43da-4758-9b42-40633fce3661",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "ShockWave",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

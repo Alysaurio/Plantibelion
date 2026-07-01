@@ -6,6 +6,7 @@ public class ShockWaveSkill : BaseSkill
 {
    
     private float currentRadius;
+    public float baseSize = 20.0f;
     private readonly HashSet<IDamageable> hitTargets = new();
  
     public override void Activate()
@@ -19,7 +20,8 @@ public class ShockWaveSkill : BaseSkill
  
         transform.position = owner.transform.position;
         currentRadius += skillData.Speed * Time.deltaTime;
- 
+        transform.localScale = Vector3.one * currentRadius * baseSize;
+        
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, currentRadius);
  
         foreach (Collider2D hit in hits)

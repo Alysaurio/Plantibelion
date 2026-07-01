@@ -15,6 +15,7 @@ public class PlayerController : BaseEntity
     public float JumpForce;
     public float NMaxJump;
     public float CurrentNJump;
+    public float timeCooldownSkill1 = 0.0f;
 
     [Header("Skills")]
     private const int MaxSkills = 2;
@@ -54,6 +55,14 @@ public class PlayerController : BaseEntity
     private void FixedUpdate()
     {
         rigibody.velocity = new Vector2(MoveInput * Speed, rigibody.velocity.y);
+        CooldownSkillController();
+    }
+
+    
+
+    private void CooldownSkillController()
+    {
+        timeCooldownSkill1 = Mathf.Max(0,timeCooldownSkill1 - Time.deltaTime);
     }
 
     public void AcquireSkill(SkillData newSkill)
@@ -75,6 +84,10 @@ public class PlayerController : BaseEntity
         }
 
         SkillData data = skills[index];
+
+        if (timeCooldownSkill1 > 0) return;
+
+        timeCooldownSkill1 = data.Cooldown;
 
         if (data.skillPrefab == null)
         {
@@ -122,7 +135,7 @@ public class PlayerController : BaseEntity
     {
         if (collision.gameObject.CompareTag("Ground"))
         {
-            rigibody.drag = 30;
+            //rigibody.drag = 30;
             IsGrounded = true;
             CurrentNJump = NMaxJump;
         }
