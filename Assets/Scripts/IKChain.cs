@@ -1,23 +1,20 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class IKChain : MonoBehaviour
 {
-    [Header("Chain")]
-    public List<Transform> joints = new List<Transform>();
+    public enum ModoIK { FABRIK, Rotar }
+    public ModoIK modo = ModoIK.FABRIK;
 
-    [Header("Targets")]
+    public List<Transform> joints = new List<Transform>();
     public Transform ancla;
     public Transform target;
 
-    [Header("Settings")]
     public int iterations = 3;
-    public float snapDistance = 0.01f;
     public float angleOffset = -90f;
 
     private List<float> boneLengths = new List<float>();
-
+    private List<Vector3> positions = new List<Vector3>(); // posiciones "virtuales" de cada joint
     float totalLength;
 
     void Start()
@@ -25,86 +22,85 @@ public class IKChain : MonoBehaviour
         Initialize();
     }
 
-    void LateUpdate()
-    {
-        if (joints.Count < 2) return;
-        SolveFABRIK();
-        RotateBones();
-    }
-
     void Initialize()
     {
         boneLengths.Clear();
+        positions.Clear();
         totalLength = 0;
+
+        for (int i = 0; i < joints.Count; i++)
+            positions.Add(joints[i].position);
+
         for (int i = 0; i < joints.Count - 1; i++)
         {
-            float length = Vector3.Distance(joints[i].position, joints[i + 1].position);
-            boneLengths.Add(length);
-            totalLength += length;
+            float len = Vector3.Distance(joints[i].position, joints[i + 1].position);
+            boneLengths.Add(len);
+            totalLength += len;
         }
     }
 
+    void LateUpdate()
+    {
+        if (joints.Count < 2 || target == null) return;
+
+        if (modo == ModoIK.FABRIK)
+            SolveFABRIK();
+        else
+            SolveRotar();
+
+        ApplyPositionsAndRotations();
+    }
+
+    // --- Igual que tu script original (y el ejemplo de Paper.js) ---
     void SolveFABRIK()
     {
-        if (ancla == null || target == null) return;
-        Vector3 targetPosition = target.position;
+        positions[0] = ancla != null ? ancla.position : positions[0];
+        Vector3 anclaPos = positions[0];
 
-        float targetDistance = Vector3.Distance(ancla.position, targetPosition);
-        // Target unreachable
-        if (targetDistance > totalLength)
+        for (int iter = 0; iter < iterations; iter++)
         {
-            Vector3 dir = (ancla.position - targetPosition).normalized;
-            joints[0].position = ancla.position;
-            for (int i = 1; i < joints.Count; i++)
-            {
-                joints[i].position = joints[i - 1].position - dir * boneLengths[i - 1];
-            }
-            return;
-        }
-
-        for (int iteration = 0; iteration < iterations; iteration++)
-        {
-            // FORWARD
-            joints[0].position = ancla.position;
-            for (int i = 1; i < joints.Count; i++)
-            {
-                joints[i].position = ConstraintDistance(
-                    joints[i].position,
-                    joints[i - 1].position,
-                    boneLengths[i - 1]
-                );
-            }
-
-            // BACKWARD
-            joints[joints.Count - 1].position = targetPosition;
+            // Reach forward (hacia el target)
+            positions[joints.Count - 1] = target.position;
             for (int i = joints.Count - 2; i >= 0; i--)
-            {
-                joints[i].position = ConstraintDistance(
-                    joints[i].position,
-                    joints[i + 1].position,
-                    boneLengths[i]
-                );
-            }
+                positions[i] = Constrain(positions[i], positions[i + 1], boneLengths[i]);
 
-            if (Vector3.Distance(joints[0].position, ancla.position) < snapDistance)
-            {
-                break;
-            }
+            // Reach backward (vuelve al ancla)
+            positions[0] = anclaPos;
+            for (int i = 1; i < joints.Count; i++)
+                positions[i] = Constrain(positions[i], positions[i - 1], boneLengths[i - 1]);
         }
     }
 
-    void RotateBones()
+    // --- Modo alternativo: solo rota cada segmento hacia el siguiente, sin IK real ---
+    // Útil para colas/tentáculos simples que "persiguen" al de adelante.
+    void SolveRotar()
     {
+        positions[0] = target.position; // la cabeza sigue al target directamente
+
+        for (int i = 1; i < joints.Count; i++)
+        {
+            Vector3 dir = (positions[i] - positions[i - 1]).normalized;
+            positions[i] = positions[i - 1] + dir * boneLengths[i - 1];
+        }
+    }
+
+    void ApplyPositionsAndRotations()
+    {
+        for (int i = 0; i < joints.Count; i++)
+            joints[i].position = positions[i];
+
         for (int i = 0; i < joints.Count - 1; i++)
         {
-            Vector3 dir = joints[i + 1].position - joints[i].position;
+            Vector3 dir = positions[i + 1] - positions[i];
             float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
             joints[i].rotation = Quaternion.Euler(0, 0, angle + angleOffset);
         }
+        if (joints.Count >= 2)
+            joints[joints.Count - 1].rotation = joints[joints.Count - 2].rotation;
     }
 
-    Vector3 ConstraintDistance(Vector3 point, Vector3 anchor, float distance)
+    Vector3 Constrain(Vector3 point, Vector3 anchor, float distance)
     {
-        return ((point - anchor).normalized * distance) + anchor;
+        return (point - anchor).normalized * distance + anchor;
     }
 }
