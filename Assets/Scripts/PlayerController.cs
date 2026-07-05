@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 public class PlayerController : BaseEntity
@@ -14,6 +15,9 @@ public class PlayerController : BaseEntity
     public float JumpForce;
     public float NMaxJump;
     public float CurrentNJump;
+
+    [Header("Efectos")]
+    [SerializeField]private UnityEvent Attack;
 
     [Header("Detección de suelo")]
     [SerializeField] private LayerMask groundLayer;
@@ -74,6 +78,7 @@ public class PlayerController : BaseEntity
 
     private void UseSkill(int index)
     {
+        Attack?.Invoke();
         if (index < 0 || index >= skills.Count)
         {
             Debug.Log("[Player] No hay skill en el slot " + (index + 1));
