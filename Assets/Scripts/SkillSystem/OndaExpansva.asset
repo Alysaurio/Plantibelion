@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Icon: {fileID: 0}
   skillName: OnditaMortal
-  Range: 5
+  Range: 3
   Speed: 10
   Damage: 10
   Knockback: 5
