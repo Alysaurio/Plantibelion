@@ -17,7 +17,7 @@ public class PlayerController : BaseEntity
     public float CurrentNJump;
 
     [Header("Efectos")]
-    [SerializeField]private UnityEvent Attack;
+    [SerializeField] private UnityEvent Attack;
 
     [Header("Detección de suelo")]
     [SerializeField] private LayerMask groundLayer;
@@ -29,11 +29,27 @@ public class PlayerController : BaseEntity
     private const int MaxSkills = 2;
     public List<SkillData> skills = new();
 
+    [Header("Efecto de salto (squash de la Capsule)")]
+    [SerializeField] private Transform capsuleVisual;
+    [SerializeField] private float jumpSquashScale = 0.3f;
+    [SerializeField] private float normalScale = 1f;
+    [SerializeField] private float squashRecoverySpeed = 2f;
+
+    private float currentSquash = 1f;
+
+    [Header("Inclinación al moverse (BodyVisual)")]
+    [SerializeField] private Transform bodyVisual;
+    [SerializeField] private float tiltAngle = 15f;
+    [SerializeField] private float tiltSpeed = 90f;
+
+    private float currentTilt = 0f;
+
     protected override void Awake()
     {
         base.Awake();
         inputs = new();
         CurrentNJump = NMaxJump;
+        currentSquash = normalScale;
     }
 
     private void OnEnable()
@@ -54,6 +70,24 @@ public class PlayerController : BaseEntity
         inputs.Player.Movement.canceled -= OnMovementFinish;
         inputs.Player.Jump.performed -= OnJumpStart;
         inputs.Disable();
+    }
+
+    protected override void Update()
+    {
+        base.Update();
+
+        if (capsuleVisual != null)
+        {
+            currentSquash = Mathf.MoveTowards(currentSquash, normalScale, squashRecoverySpeed * Time.deltaTime);
+            capsuleVisual.localScale = new Vector3(currentSquash, currentSquash, capsuleVisual.localScale.z);
+        }
+
+        if (bodyVisual != null)
+        {
+            float targetTilt = MoveInput > 0 ? -tiltAngle : (MoveInput < 0 ? tiltAngle : 0f);
+            currentTilt = Mathf.MoveTowards(currentTilt, targetTilt, tiltSpeed * Time.deltaTime);
+            bodyVisual.localRotation = Quaternion.Euler(0f, 0f, currentTilt);
+        }
     }
 
     private void FixedUpdate()
@@ -120,6 +154,8 @@ public class PlayerController : BaseEntity
             rigibody.AddForce(Vector2.up * JumpForce, ForceMode2D.Impulse);
             IsGrounded = false;
             CurrentNJump--;
+
+            currentSquash = jumpSquashScale;
         }
     }
 
