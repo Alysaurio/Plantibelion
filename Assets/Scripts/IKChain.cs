@@ -5,16 +5,14 @@ public class IKChain : MonoBehaviour
 {
     public enum ModoIK { FABRIK, Rotar }
     public ModoIK modo = ModoIK.FABRIK;
-
     public List<Transform> joints = new List<Transform>();
     public Transform ancla;
     public Transform target;
-
     public int iterations = 3;
     public float angleOffset = -90f;
 
     private List<float> boneLengths = new List<float>();
-    private List<Vector3> positions = new List<Vector3>(); // posiciones "virtuales" de cada joint
+    private List<Vector3> positions = new List<Vector3>();
     float totalLength;
 
     void Start()
@@ -22,7 +20,7 @@ public class IKChain : MonoBehaviour
         Initialize();
     }
 
-    void Initialize()
+    public void Initialize()
     {
         boneLengths.Clear();
         positions.Clear();
@@ -41,17 +39,21 @@ public class IKChain : MonoBehaviour
 
     void LateUpdate()
     {
-        if (joints.Count < 2 || target == null) return;
+        if (joints.Count < 2) return;
 
         if (modo == ModoIK.FABRIK)
+        {
+            if (target == null) return; // FABRIK sí necesita target
             SolveFABRIK();
+        }
         else
-            SolveRotar();
+        {
+            SolveRotar(); // Rotar usa joints[0] directamente, no necesita target
+        }
 
         ApplyPositionsAndRotations();
     }
 
-    // --- Igual que tu script original (y el ejemplo de Paper.js) ---
     void SolveFABRIK()
     {
         positions[0] = ancla != null ? ancla.position : positions[0];
@@ -59,28 +61,31 @@ public class IKChain : MonoBehaviour
 
         for (int iter = 0; iter < iterations; iter++)
         {
-            // Reach forward (hacia el target)
             positions[joints.Count - 1] = target.position;
             for (int i = joints.Count - 2; i >= 0; i--)
                 positions[i] = Constrain(positions[i], positions[i + 1], boneLengths[i]);
 
-            // Reach backward (vuelve al ancla)
             positions[0] = anclaPos;
             for (int i = 1; i < joints.Count; i++)
                 positions[i] = Constrain(positions[i], positions[i - 1], boneLengths[i - 1]);
         }
     }
 
-    // --- Modo alternativo: solo rota cada segmento hacia el siguiente, sin IK real ---
-    // Útil para colas/tentáculos simples que "persiguen" al de adelante.
     void SolveRotar()
     {
-        positions[0] = target.position; // la cabeza sigue al target directamente
+        // La cabeza (joint[0]) ya fue movida por AirSteering, solo leemos su posición
+        positions[0] = joints[0].position;
 
-        for (int i = 1; i < joints.Count; i++)
+        for (int i = 1; i < joints.Count - 1; i++)
         {
             Vector3 dir = (positions[i] - positions[i - 1]).normalized;
             positions[i] = positions[i - 1] + dir * boneLengths[i - 1];
+        }
+
+        if (joints.Count >= 2)
+        {
+            Vector3 dir = (positions[joints.Count - 1] - positions[joints.Count - 2]).normalized;
+            positions[joints.Count - 1] = positions[joints.Count - 2] + dir * boneLengths[boneLengths.Count - 1];
         }
     }
 
@@ -95,6 +100,7 @@ public class IKChain : MonoBehaviour
             float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
             joints[i].rotation = Quaternion.Euler(0, 0, angle + angleOffset);
         }
+
         if (joints.Count >= 2)
             joints[joints.Count - 1].rotation = joints[joints.Count - 2].rotation;
     }

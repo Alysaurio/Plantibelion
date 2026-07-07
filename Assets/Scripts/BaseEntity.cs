@@ -9,32 +9,45 @@ public abstract class BaseEntity : MonoBehaviour, IDamageable
     public int entityID;
     public string entityName;
     public string entityDescription;
+
     [Header("Stats")]
     public BaseStats stats;
-    [SerializeField] protected int currentHealth;   
-    
+    [SerializeField] protected int currentHealth;
+
+    [Header("Invencibilidad")]
+    public float invincibilityDuration = 0.3f;
+    private float invincibilityTimer = 0f;
+
     protected virtual void Awake()
     {
         currentHealth = stats.Health;
     }
 
+    protected virtual void Update()
+    {
+        if (invincibilityTimer > 0f)
+            invincibilityTimer -= Time.deltaTime;
+    }
+
     public virtual void TakeDamage(int damage)
     {
+        if (invincibilityTimer > 0f) return;
+
         currentHealth -= damage;
+        invincibilityTimer = invincibilityDuration;
         Debug.Log($"{entityName} lo hirieron señor poleceaaaa!");
+
         if (currentHealth <= 0)
-        {
             Die();
-        }
     }
+
     public virtual void TakeDamage(DamageData damageData)
     {
         TakeDamage(damageData.damage);
     }
 
     protected virtual void Die()
-    {
-        Debug.Log($"{entityName} lo mataron doctor, mataron un inoceeeentee");
+    {        
         Destroy(gameObject);
     }
 

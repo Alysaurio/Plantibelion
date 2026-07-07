@@ -7,12 +7,7 @@ public class ShockWaveSkill : BaseSkill
    
     private float currentRadius;
     private readonly HashSet<IDamageable> hitTargets = new();
- 
-    public override void Activate()
-    {
-        // Añadir un sonido o efecto visual
-    }
- 
+    public override void Activate() { }
     private void Update()
     {
         if (owner == null) return;
